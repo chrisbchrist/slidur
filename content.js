@@ -4,13 +4,15 @@ class Slidur {
     this.currentIndex = 0;
     this.interval = 5000;
     this.preloaded = [];
+    this.timer;
+    this.play = false;
   }
 
   prevSlide() {
     if (this.currentIndex > 0) {
       this.currentIndex = this.currentIndex - 1;
       setImage(this.images[this.currentIndex]);
-      this.getProgress();
+      this.updateProgress();
     }
   }
 
@@ -18,7 +20,7 @@ class Slidur {
     if (this.currentIndex < this.images.length - 1) {
       this.currentIndex = this.currentIndex + 1;
       setImage(this.images[this.currentIndex]);
-      this.getProgress();
+      this.updateProgress();
     }
   }
 
@@ -27,12 +29,32 @@ class Slidur {
   }
 
   startSlideshow() {
-    setInterval(() => this.nextSlide(), 3000);
+    this.timer = setInterval(() => this.nextSlide(), 3000);
+    const playBtn = document.getElementById("play-btn");
+    playBtn.removeEventListener("click", function() {
+      slidur.startSlideshow();
+    });
+    playBtn.addEventListener("click", function() {
+      slidur.stopSlideshow();
+    });
+    playBtn.textContent = "Pause";
   }
 
-  getProgress() {
+  stopSlideshow() {
+    clearInterval(this.timer);
+    const playBtn = document.getElementById("play-btn");
+    playBtn.removeEventListener("click", function() {
+      slidur.stopSlideshow();
+    });
+    playBtn.addEventListener("click", function() {
+      slidur.startSlideshow();
+    });
+    playBtn.textContent = "Start Slideshow";
+  }
+
+  updateProgress() {
     const ratio = ((this.currentIndex + 1) / this.images.length) * 100;
-    updateProgress(ratio);
+    document.getElementById("progress").style.width = ratio + "%";
   }
 }
 
@@ -50,19 +72,15 @@ function setImage(url) {
   document.getElementById("current-img").src = url;
 }
 
-function updateProgress(percent) {
-  document.getElementById("progress").style.width = percent + "%";
-}
-
 let slidur = new Slidur();
 
-//Add start button at the top of the gallery container
+//Create start button at the top of the gallery container
 const iconUrl = chrome.extension.getURL("img/slideshow-icon.svg");
 const postHeader = document.getElementsByClassName("post-header")[0];
 const startBtn = document.createElement("div");
 startBtn.classList.add("slidur__start-btn");
 startBtn.innerHTML =
-  "<img class='slidur__icon' src='" + iconUrl + "'/>Slideshow</div>";
+  "<img class='slidur__icon' src='" + iconUrl + "'/>Slidur</div>";
 
 //Get images from Imgur API, creates template and appends to body
 startBtn.addEventListener("click", function() {
@@ -85,6 +103,7 @@ startBtn.addEventListener("click", function() {
     const bg = document.createElement("div");
     bg.classList.add("slidur__bg");
 
+    //Import icon URL's from extension
     const prevIcon = chrome.extension.getURL("img/chevron-left-solid.svg");
     const nextIcon = chrome.extension.getURL("img/chevron-right-solid.svg");
 
@@ -106,6 +125,9 @@ startBtn.addEventListener("click", function() {
        <img class="slidur__control-icon" src="${nextIcon}"/>
       </div>
     </div>
+    <div class="slidur__buttons">
+      <div id="play-btn" class="slidur__button tab-index="0">Start Slideshow</div>
+    </div>
     </div>
     `;
 
@@ -116,6 +138,9 @@ startBtn.addEventListener("click", function() {
     });
     document.getElementById("next").addEventListener("click", function() {
       slidur.nextSlide();
+    });
+    document.getElementById("play-btn").addEventListener("click", function() {
+      slidur.startSlideshow();
     });
     slidur.updateProgress();
   });

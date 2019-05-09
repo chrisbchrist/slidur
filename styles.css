@@ -69,6 +69,7 @@
   height: auto;
   max-width: calc(100% - 200px);
   max-height: calc(100vh - 50px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .slidur__control {
@@ -101,6 +102,12 @@
 
 .slidur__control-icon {
   width: 50px;
+  opacity: 0.75;
+}
+
+.slidur__control:hover .slidur__control-icon {
+  opacity: 1;
+  filter: drop-shadow(3px 3px 15px rgba(255, 255, 255, 0.35));
 }
 
 .slidur__close {
@@ -133,4 +140,39 @@
   height: 10px;
   background: #16a0db;
   width: 0%;
+}
+
+.slidur__buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  position: absolute;
+  width: 100%;
+  bottom: -60px;
+  left: 0;
+}
+
+.slidur__button {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #0d76bd;
+  background: #16a0db;
+  box-shadow: 0 3px #002b54, inset 1px 1px rgba(255, 255, 255, 0.25);
+  transition: all 0.3s;
+  color: white;
+  width: 200px;
+  font-family: "Open Sans";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.slidur__button:hover {
+  background: #1982af;
+  box-shadow: 0 2px #002b54, inset 1px 1px rgba(255, 255, 255, 0.25);
+  transform: translateY(1px);
 }
