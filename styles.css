@@ -1,0 +1,136 @@
+.slidur__start-btn {
+  margin: 20px auto 0 auto;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #1a7c4e;
+  background: #1bb76e;
+  box-shadow: 0 3px #1a7c4e, inset 1px 1px rgba(255, 255, 255, 0.25);
+  transition: all 0.3s;
+  color: white;
+  width: 200px;
+  font-family: "Open Sans";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.slidur__icon {
+  width: 20px;
+  padding-right: 10px;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+.slidur__start-btn:hover {
+  background: #18a563;
+  box-shadow: 0 2px #1a7c4e, inset 1px 1px rgba(255, 255, 255, 0.25);
+  transform: translateY(1px);
+}
+
+.slidur__bg {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slidur__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /*   flex-wrap: wrap; */
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 10px;
+}
+
+.slidur__main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.slidur__current-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: calc(100% - 200px);
+  max-height: calc(100vh - 50px);
+}
+
+.slidur__control {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 1s;
+  cursor: pointer;
+  max-height: calc(100% - 50px);
+  background: transparent;
+  align-self: stretch;
+}
+
+.slidur__control--back:hover {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+}
+
+.slidur__control--next:hover {
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+}
+
+.slidur__control-icon {
+  width: 50px;
+}
+
+.slidur__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  background: #fa7d7d;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2.5em;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.slidur__progress-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  top: 0;
+  left: 0;
+}
+
+.slidur__progress {
+  height: 10px;
+  background: #16a0db;
+  width: 0%;
+}
