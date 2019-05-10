@@ -2,7 +2,7 @@ class Slidur {
   constructor() {
     this.images = [];
     this.currentIndex = 0;
-    this.interval = 5000;
+    this.interval = 2500;
     this.preloaded = [];
     this.timer;
     this.play = false;
@@ -28,34 +28,36 @@ class Slidur {
     this.interval = newInterval;
   }
 
-  startSlideshow() {
-    this.timer = setInterval(() => this.nextSlide(), 3000);
-    const playBtn = document.getElementById("play-btn");
-    playBtn.removeEventListener("click", function() {
-      slidur.startSlideshow();
-    });
-    playBtn.addEventListener("click", function() {
-      slidur.stopSlideshow();
-    });
-    playBtn.textContent = "Pause";
-  }
+  // startSlideshow() {
+  //   this.timer = setInterval(() => this.nextSlide(), this.interval);
+  // }
 
-  stopSlideshow() {
-    clearInterval(this.timer);
-    const playBtn = document.getElementById("play-btn");
-    playBtn.removeEventListener("click", function() {
-      slidur.stopSlideshow();
-    });
-    playBtn.addEventListener("click", function() {
-      slidur.startSlideshow();
-    });
-    playBtn.textContent = "Start Slideshow";
+  // stopSlideshow() {
+  //   clearInterval(this.timer);
+  //   const playBtn = document.getElementById("play-btn");
+  //   playBtn.removeEventListener("click", function() {
+  //     slidur.stopSlideshow();
+  //   });
+  //   playBtn.addEventListener("click", function() {
+  //     slidur.startSlideshow();
+  //   });
+  //   playBtn.textContent = "Start Slideshow";
+  // }
+
+  togglePlay() {
+    if (!this.timer) {
+      this.timer = setInterval(() => this.nextSlide(), this.interval);
+    } else {
+      clearInterval(this.timer);
+    }
   }
 
   updateProgress() {
     const ratio = ((this.currentIndex + 1) / this.images.length) * 100;
     document.getElementById("progress").style.width = ratio + "%";
   }
+
+  reset() {}
 }
 
 function getImages(hash) {
@@ -72,7 +74,9 @@ function setImage(url) {
   document.getElementById("current-img").src = url;
 }
 
-let slidur = new Slidur();
+function toggleArrows() {
+  const arrows = document.getElementsByClassName("slidur__control");
+}
 
 //Create start button at the top of the gallery container
 const iconUrl = chrome.extension.getURL("img/slideshow-icon.svg");
@@ -84,6 +88,7 @@ startBtn.innerHTML =
 
 //Get images from Imgur API, creates template and appends to body
 startBtn.addEventListener("click", function() {
+  let slidur = new Slidur();
   //Imgur galleries are preceded by 'gallery' or 'a' routes
   const currentUrl = window.location.href;
   const galleryHash =
@@ -110,7 +115,8 @@ startBtn.addEventListener("click", function() {
     bg.innerHTML = `
     <div class="slidur__progress-wrapper">
     <div id="progress" class="slidur__progress"></div>
-    </div>  
+    </div>
+    <div class="slidur__close">🞩</div>  
     <div class="slidur__main">
     <div id="back" class="slidur__control slidur__control--back">
       <div class="slidur__arrow slidur__arrow-back">
@@ -139,8 +145,8 @@ startBtn.addEventListener("click", function() {
     document.getElementById("next").addEventListener("click", function() {
       slidur.nextSlide();
     });
-    document.getElementById("play-btn").addEventListener("click", function() {
-      slidur.startSlideshow();
+    document.getElementById("play-btn").addEventListener("click", () => {
+      slidur.togglePlay.bind(slidur);
     });
     slidur.updateProgress();
   });
