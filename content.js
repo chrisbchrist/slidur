@@ -2,7 +2,7 @@ class Slidur {
   constructor() {
     this.images = [];
     this.currentIndex = 0;
-    this.interval = 2500;
+    this.interval = 3000;
     this.preloaded = [];
     this.timer;
     this.play = false;
@@ -61,11 +61,20 @@ function setImage(url) {
   document.getElementById("current-img").src = url;
 }
 
+function preloadImages(currentIndex) {
+    
+}
+
 function toggleArrows() {
   const arrows = document.getElementsByClassName("slidur__control");
   for (let i = 0; i < 2; i++) {
     arrows[i].classList.toggleClass("slidur__control--hidden");
   }
+}
+
+function removeSlidur() {
+  const app = document.getElementById("app");
+  document.body.removeChild(app);
 }
 
 //Create start button at the top of the gallery container
@@ -94,9 +103,10 @@ startBtn.addEventListener("click", function() {
     }
     slidur.images = imageLinks;
 
-    //Create backdrop
+    //Create backdrop container
     const bg = document.createElement("div");
     bg.classList.add("slidur__bg");
+    bg.id = "app";
 
     //Import icon URL's from extension
     const prevIcon = chrome.extension.getURL("img/chevron-left-solid.svg");
@@ -106,7 +116,7 @@ startBtn.addEventListener("click", function() {
     <div class="slidur__progress-wrapper">
     <div id="progress" class="slidur__progress"></div>
     </div>
-    <div class="slidur__close">🞩</div>  
+    <div class="slidur__close" id="close">🞩</div>  
     <div class="slidur__main">
     <div id="back" class="slidur__control slidur__control--back">
       <div class="slidur__arrow slidur__arrow-back">
@@ -136,6 +146,7 @@ startBtn.addEventListener("click", function() {
       slidur.nextSlide();
     });
     document.getElementById("play-btn").addEventListener("click", slidur.togglePlay.bind(slidur));
+    document.getElementById("close").addEventListener("click", removeSlidur);
     slidur.updateProgress();
   });
 });
