@@ -28,28 +28,15 @@ class Slidur {
     this.interval = newInterval;
   }
 
-  // startSlideshow() {
-  //   this.timer = setInterval(() => this.nextSlide(), this.interval);
-  // }
-
-  // stopSlideshow() {
-  //   clearInterval(this.timer);
-  //   const playBtn = document.getElementById("play-btn");
-  //   playBtn.removeEventListener("click", function() {
-  //     slidur.stopSlideshow();
-  //   });
-  //   playBtn.addEventListener("click", function() {
-  //     slidur.startSlideshow();
-  //   });
-  //   playBtn.textContent = "Start Slideshow";
-  // }
-
   togglePlay() {
+    const btnText = this.timer ? "Start Slideshow" : "Pause";
     if (!this.timer) {
       this.timer = setInterval(() => this.nextSlide(), this.interval);
     } else {
       clearInterval(this.timer);
+      this.timer = null;
     }
+    document.getElementById("play-btn").textContent = btnText;
   }
 
   updateProgress() {
@@ -76,6 +63,9 @@ function setImage(url) {
 
 function toggleArrows() {
   const arrows = document.getElementsByClassName("slidur__control");
+  for (let i = 0; i < 2; i++) {
+    arrows[i].classList.toggleClass("slidur__control--hidden");
+  }
 }
 
 //Create start button at the top of the gallery container
@@ -145,9 +135,7 @@ startBtn.addEventListener("click", function() {
     document.getElementById("next").addEventListener("click", function() {
       slidur.nextSlide();
     });
-    document.getElementById("play-btn").addEventListener("click", () => {
-      slidur.togglePlay.bind(slidur);
-    });
+    document.getElementById("play-btn").addEventListener("click", slidur.togglePlay.bind(slidur));
     slidur.updateProgress();
   });
 });

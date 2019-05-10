@@ -101,6 +101,10 @@
   );
 }
 
+.slidur__control--hidden {
+  display: none;
+}
+
 .slidur__control-icon {
   width: 50px;
   opacity: 0.75;
