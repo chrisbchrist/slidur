@@ -4,7 +4,7 @@ class Slidur {
     this.currentIndex = 0;
     this.interval = 2500;
     this.preloaded = [];
-    this.timer;
+    this.timer = null;
     this.play = false;
   }
 
@@ -28,36 +28,23 @@ class Slidur {
     this.interval = newInterval;
   }
 
-  // startSlideshow() {
-  //   this.timer = setInterval(() => this.nextSlide(), this.interval);
-  // }
-
-  // stopSlideshow() {
-  //   clearInterval(this.timer);
-  //   const playBtn = document.getElementById("play-btn");
-  //   playBtn.removeEventListener("click", function() {
-  //     slidur.stopSlideshow();
-  //   });
-  //   playBtn.addEventListener("click", function() {
-  //     slidur.startSlideshow();
-  //   });
-  //   playBtn.textContent = "Start Slideshow";
-  // }
-
   togglePlay() {
+    console.log(this.timer);
+    const btnText = this.timer ? "Start Slideshow" : "Pause";
     if (!this.timer) {
       this.timer = setInterval(() => this.nextSlide(), this.interval);
     } else {
       clearInterval(this.timer);
+      this.timer = null;
     }
+    document.getElementById("play-btn").textContent = btnText;
+    toggleArrows();
   }
 
   updateProgress() {
     const ratio = ((this.currentIndex + 1) / this.images.length) * 100;
     document.getElementById("progress").style.width = ratio + "%";
   }
-
-  reset() {}
 }
 
 function getImages(hash) {
@@ -76,6 +63,9 @@ function setImage(url) {
 
 function toggleArrows() {
   const arrows = document.getElementsByClassName("slidur__control");
+  for (let i = 0; i < arrows.length; i++) {
+    arrows[i].classList.toggle("slidur__control--hidden");
+  }
 }
 
 //Create start button at the top of the gallery container
@@ -116,8 +106,9 @@ startBtn.addEventListener("click", function() {
     <div class="slidur__progress-wrapper">
     <div id="progress" class="slidur__progress"></div>
     </div>
-    <div class="slidur__close">🞩</div>  
+      
     <div class="slidur__main">
+    <div class="slidur__close" id="close">🞩</div>
     <div id="back" class="slidur__control slidur__control--back">
       <div class="slidur__arrow slidur__arrow-back">
         <img class="slidur__control-icon" src="${prevIcon}"/>
@@ -145,8 +136,12 @@ startBtn.addEventListener("click", function() {
     document.getElementById("next").addEventListener("click", function() {
       slidur.nextSlide();
     });
-    document.getElementById("play-btn").addEventListener("click", () => {
-      slidur.togglePlay.bind(slidur);
+    document
+      .getElementById("play-btn")
+      .addEventListener("click", slidur.togglePlay.bind(slidur));
+    document.getElementById("close").addEventListener("click", () => {
+      const app = document.getElementsByClassName("slidur__bg")[0];
+      app.parentNode.removeChild(app);
     });
     slidur.updateProgress();
   });
