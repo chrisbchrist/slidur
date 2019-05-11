@@ -2,7 +2,7 @@ class Slidur {
   constructor() {
     this.images = [];
     this.currentIndex = 0;
-    this.interval = 2500;
+    this.interval = 3000;
     this.preloaded = [];
     this.timer = null;
     this.play = false;
@@ -29,7 +29,6 @@ class Slidur {
   }
 
   togglePlay() {
-    console.log(this.timer);
     const btnText = this.timer ? "Start Slideshow" : "Pause";
     if (!this.timer) {
       this.timer = setInterval(() => this.nextSlide(), this.interval);
@@ -38,7 +37,6 @@ class Slidur {
       this.timer = null;
     }
     document.getElementById("play-btn").textContent = btnText;
-    toggleArrows();
   }
 
   updateProgress() {
@@ -61,11 +59,18 @@ function setImage(url) {
   document.getElementById("current-img").src = url;
 }
 
+function preloadImages(currentIndex) {}
+
 function toggleArrows() {
   const arrows = document.getElementsByClassName("slidur__control");
-  for (let i = 0; i < arrows.length; i++) {
-    arrows[i].classList.toggle("slidur__control--hidden");
+  for (let i = 0; i < 2; i++) {
+    arrows[i].classList.toggleClass("slidur__control--hidden");
   }
+}
+
+function removeSlidur() {
+  const app = document.getElementById("app");
+  document.body.removeChild(app);
 }
 
 //Create start button at the top of the gallery container
@@ -94,9 +99,10 @@ startBtn.addEventListener("click", function() {
     }
     slidur.images = imageLinks;
 
-    //Create backdrop
+    //Create backdrop container
     const bg = document.createElement("div");
     bg.classList.add("slidur__bg");
+    bg.id = "app";
 
     //Import icon URL's from extension
     const prevIcon = chrome.extension.getURL("img/chevron-left-solid.svg");
@@ -106,7 +112,7 @@ startBtn.addEventListener("click", function() {
     <div class="slidur__progress-wrapper">
     <div id="progress" class="slidur__progress"></div>
     </div>
-      
+    <div class="slidur__close" id="close">🞩</div>  
     <div class="slidur__main">
     <div class="slidur__close" id="close">🞩</div>
     <div id="back" class="slidur__control slidur__control--back">
@@ -139,10 +145,7 @@ startBtn.addEventListener("click", function() {
     document
       .getElementById("play-btn")
       .addEventListener("click", slidur.togglePlay.bind(slidur));
-    document.getElementById("close").addEventListener("click", () => {
-      const app = document.getElementsByClassName("slidur__bg")[0];
-      app.parentNode.removeChild(app);
-    });
+    document.getElementById("close").addEventListener("click", removeSlidur);
     slidur.updateProgress();
   });
 });
