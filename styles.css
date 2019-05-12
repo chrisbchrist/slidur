@@ -8,19 +8,30 @@
   transition: all 0.3s;
   color: white;
   width: 200px;
-  font-family: "Open Sans";
+  font-family: "Open Sans Condensed";
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 16px;
   text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
   cursor: pointer;
+  transition: all 0.3s;
 }
 
 .slidur__icon {
   width: 20px;
   padding-right: 10px;
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+.slidur__icon--play {
+  width: 20px;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+.slidur__icon--interval {
+  width: 20px;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+  padding-right: 10px;
 }
 
 .slidur__start-btn:hover {
@@ -42,6 +53,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Open Sans Condensed";
 }
 
 .slidur__wrapper {
@@ -105,12 +117,12 @@
   display: none;
 }
 
-.slidur__control-icon {
+.slidur__arrow-icon {
   width: 50px;
   opacity: 0.75;
 }
 
-.slidur__control:hover .slidur__control-icon {
+.slidur__control:hover .slidur__arrow-icon {
   opacity: 1;
   filter: drop-shadow(3px 3px 15px rgba(255, 255, 255, 0.35));
 }
@@ -130,18 +142,17 @@
   width: 0%;
 }
 
-.slidur__buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
+.slidur__actions {
+  height: 70px;
   position: absolute;
-  width: 100%;
-  bottom: -60px;
-  left: 0;
+  width: calc(100% - 200px);
+  bottom: -70px;
+  left: 100px;
+  display: flex;
+  align-items: center;
 }
 
-.slidur__button {
+/* .slidur__button {
   padding: 10px;
   border-radius: 4px;
   border: 1px solid #0d76bd;
@@ -150,19 +161,132 @@
   transition: all 0.3s;
   color: white;
   width: 200px;
-  font-family: "Open Sans";
+  font-family: "Open Sans Condensed";
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 16px;
   text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
   cursor: pointer;
+} */
+
+.slidur__play {
+  padding: 10px;
+  border: 1px solid #0d76bd;
+  box-shadow: inset 1px 1px rgba(255, 255, 255, 0.25);
+  transition: all 0.3s;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-family: "Open Sans Condensed";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.7;
+}
+
+.slidur__play:hover {
+  opacity: 1;
+  background: radial-gradient(circle at center, #16a0db 0%, #0d76bd 100%);
+}
+
+.slidur__interval-wrapper {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slidur__change-interval {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0 7px;
+  height: 40px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.slidur__change-interval:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.slidur__interval-wrapper--open .slidur__change-interval {
+  background: linear-gradient(to bottom, #16a0db 0%, #0d76bd 100%);
+}
+
+.slidur__interval-popup {
+  display: none;
+  opacity: 0;
+  position: absolute;
+  top: -15px;
+  transform: translateY(-100%);
+  background: white;
+  border-radius: 5px;
+  width: 200px;
+  height: 120px;
+  padding: 15px;
+  transition: all 0.4s;
+  font-family: "Open Sans Condensed";
+}
+
+.slidur__interval-popup::before {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 7.5px 0 7.5px;
+  border-color: #fff transparent transparent transparent;
+}
+
+.slidur__interval-wrapper--open .slidur__interval-popup {
+  display: block;
+  opacity: 1;
+}
+
+.slidur__interval-text {
+  color: #666;
+  font-size: 16px;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.slidur__interval-text strong {
+  color: #333;
+}
+
+.slidur__popup-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.slidur__popup-btn {
+  color: white;
+}
+
+.slidur__popup-btn--confirm {
+  background: #6ebe6e;
+}
+
+.slidur__popup-btn--cancel {
+  background: #e85353;
 }
 
 .slidur__button:hover {
   background: #1982af;
-  box-shadow: 0 2px #002b54, inset 1px 1px rgba(255, 255, 255, 0.25);
-  transform: translateY(1px);
+  box-shadow: inset 1px 1px rgba(255, 255, 255, 0.25);
 }
 
 .slidur__close {

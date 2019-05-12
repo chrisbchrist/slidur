@@ -9,7 +9,7 @@
     "default_title": "Have a good day",
     "default_popup": "popup.html"
   },
-  "web_accessible_resources": ["img/*.svg"],
+  "web_accessible_resources": ["img/*.svg", ".ttf", "lib/*.ttf", "img/*.woff"],
   "content_scripts": [
     {
       "css": ["styles.css"],

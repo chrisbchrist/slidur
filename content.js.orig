@@ -1,18 +1,10 @@
-var styleNode = document.createElement("style");
-styleNode.type = "text/css";
-styleNode.textContent =
-  "@font-face { font-family: 'Open Sans Condensed'; src: url('" +
-  chrome.extension.getURL("lib/OpenSansCondensed-Light.ttf") +
-  "'); }";
-document.head.appendChild(styleNode);
-
 class Slidur {
   constructor() {
     this.images = [];
     this.currentIndex = 0;
     this.interval = 3000;
     this.preloaded = [];
-    this.timer;
+    this.timer = null;
     this.play = false;
   }
 
@@ -37,24 +29,20 @@ class Slidur {
   }
 
   togglePlay() {
-    const btnImg = this.timer
-      ? chrome.extension.getURL("img/play-solid.svg")
-      : chrome.extension.getURL("img/pause-solid.svg");
+    const btnText = this.timer ? "Start Slideshow" : "Pause";
     if (!this.timer) {
       this.timer = setInterval(() => this.nextSlide(), this.interval);
     } else {
       clearInterval(this.timer);
       this.timer = null;
     }
-    document.getElementById("play-icon").src = btnImg;
+    document.getElementById("play-btn").textContent = btnText;
   }
 
   updateProgress() {
     const ratio = ((this.currentIndex + 1) / this.images.length) * 100;
     document.getElementById("progress").style.width = ratio + "%";
   }
-
-  reset() {}
 }
 
 function getImages(hash) {
@@ -93,7 +81,7 @@ startBtn.classList.add("slidur__start-btn");
 startBtn.innerHTML =
   "<img class='slidur__icon' src='" + iconUrl + "'/>Slidur</div>";
 
-//Get images from Imgur API, creates HTML template and appends to body
+//Get images from Imgur API, creates template and appends to body
 startBtn.addEventListener("click", function() {
   let slidur = new Slidur();
   //Imgur galleries are preceded by 'gallery' or 'a' routes
@@ -119,18 +107,17 @@ startBtn.addEventListener("click", function() {
     //Import icon URL's from extension
     const prevIcon = chrome.extension.getURL("img/chevron-left-solid.svg");
     const nextIcon = chrome.extension.getURL("img/chevron-right-solid.svg");
-    const playIcon = chrome.extension.getURL("img/play-solid.svg");
-    const intervalIcon = chrome.extension.getURL("img/clock-regular.svg");
 
     bg.innerHTML = `
     <div class="slidur__progress-wrapper">
     <div id="progress" class="slidur__progress"></div>
     </div>
+    <div class="slidur__close" id="close">🞩</div>  
     <div class="slidur__main">
     <div class="slidur__close" id="close">🞩</div>
     <div id="back" class="slidur__control slidur__control--back">
       <div class="slidur__arrow slidur__arrow-back">
-        <img class="slidur__arrow-icon" src="${prevIcon}"/>
+        <img class="slidur__control-icon" src="${prevIcon}"/>
       </div>
     </div>
     <img id="current-img" class="slidur__current-img" src=${
@@ -138,31 +125,17 @@ startBtn.addEventListener("click", function() {
     }/>
     <div id="next" class="slidur__control slidur__control--next">
        <div class="slidur__arrow slidur__arrow-next">
-       <img class="slidur__arrow-icon" src="${nextIcon}"/>
+       <img class="slidur__control-icon" src="${nextIcon}"/>
       </div>
     </div>
-    <div class="slidur__actions">
-      <div id="play-btn" class="slidur__play" tab-index="0"><img id="play-icon" class="slidur__icon--play" src="${playIcon}"/></div>
-      <div class="slidur__interval-wrapper">
-        <div class="slidur__interval-popup">
-          <p class="slidur__interval-text">Enter time between slides in milliseconds (e.g. <strong>3000</strong>).</p>
-          <input type="text" class="slidur__interval-input" placeholder="Interval"/>
-          <div class="slidur__popup-buttons">
-            <button class="slidur__popup-btn slidur__popup-btn--confirm">Change</button>
-            <button class="slidur__popup-btn slidur__popup-btn--cancel">Cancel</button>
-          </div>
-        </div>  
-        <div class="slidur__change-interval" id="change-interval">
-          <img class="slidur__icon--interval" src="${intervalIcon}"/>
-          Change Interval
-        </div>
-      </div>
+    <div class="slidur__buttons">
+      <div id="play-btn" class="slidur__button tab-index="0">Start Slideshow</div>
     </div>
     </div>
     `;
+
     document.body.appendChild(bg);
 
-    //Attach event listeners
     document.getElementById("back").addEventListener("click", function() {
       slidur.prevSlide();
     });
@@ -174,11 +147,6 @@ startBtn.addEventListener("click", function() {
       .addEventListener("click", slidur.togglePlay.bind(slidur));
     document.getElementById("close").addEventListener("click", removeSlidur);
     slidur.updateProgress();
-    document
-      .getElementsByClassName("slidur__interval-wrapper")[0]
-      .addEventListener("click", function() {
-        this.classList.add("slidur__interval-wrapper--open");
-      });
   });
 });
 
