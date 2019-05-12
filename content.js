@@ -121,6 +121,8 @@ startBtn.addEventListener("click", function() {
     const nextIcon = chrome.extension.getURL("img/chevron-right-solid.svg");
     const playIcon = chrome.extension.getURL("img/play-solid.svg");
     const intervalIcon = chrome.extension.getURL("img/clock-regular.svg");
+    const checklIcon = chrome.extension.getURL("img/check-solid.svg");
+    const xIcon = chrome.extension.getURL("img/times-solid.svg");
 
     bg.innerHTML = `
     <div class="slidur__progress-wrapper">
@@ -146,10 +148,10 @@ startBtn.addEventListener("click", function() {
       <div class="slidur__interval-wrapper">
         <div class="slidur__interval-popup">
           <p class="slidur__interval-text">Enter time between slides in milliseconds (e.g. <strong>3000</strong>).</p>
-          <input type="text" class="slidur__interval-input" placeholder="Interval"/>
+          <input id="interval-input" type="text" class="slidur__interval-input" placeholder="Interval"/>
           <div class="slidur__popup-buttons">
-            <button class="slidur__popup-btn slidur__popup-btn--confirm">Change</button>
-            <button class="slidur__popup-btn slidur__popup-btn--cancel">Cancel</button>
+            <button id="interval-confirm" class="slidur__popup-btn slidur__popup-btn--confirm">Change</button>
+            <button id="interval-cancel" class="slidur__popup-btn slidur__popup-btn--cancel">Cancel</button>
           </div>
         </div>  
         <div class="slidur__change-interval" id="change-interval">
@@ -161,23 +163,50 @@ startBtn.addEventListener("click", function() {
     </div>
     `;
     document.body.appendChild(bg);
+    slidur.updateProgress();
 
     //Attach event listeners
     document.getElementById("back").addEventListener("click", function() {
       slidur.prevSlide();
     });
+
     document.getElementById("next").addEventListener("click", function() {
       slidur.nextSlide();
     });
+
     document
       .getElementById("play-btn")
       .addEventListener("click", slidur.togglePlay.bind(slidur));
+
     document.getElementById("close").addEventListener("click", removeSlidur);
-    slidur.updateProgress();
+
     document
-      .getElementsByClassName("slidur__interval-wrapper")[0]
+      .getElementById("change-interval")
       .addEventListener("click", function() {
-        this.classList.add("slidur__interval-wrapper--open");
+        document
+          .getElementsByClassName("slidur__interval-wrapper")[0]
+          .classList.add("slidur__interval-wrapper--open");
+      });
+    document
+      .getElementById("interval-confirm")
+      .addEventListener("click", function() {
+        const newInterval = document.getElementById("interval-input").value;
+        if (parseInt(newInterval) > 99 && parseInt(newInterval) < 60001) {
+          slidur.setInterval(newInterval);
+          document
+            .getElementsByClassName("slidur__interval-wrapper")[0]
+            .classList.remove("slidur__interval-wrapper--open");
+        } else {
+          alert("Please enter a value between 100 and 60000.");
+        }
+      });
+
+    document
+      .getElementById("interval-cancel")
+      .addEventListener("click", function() {
+        document
+          .getElementsByClassName("slidur__interval-wrapper")[0]
+          .classList.remove("slidur__interval-wrapper--open");
       });
   });
 });
