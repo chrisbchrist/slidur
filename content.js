@@ -33,6 +33,9 @@ class Slidur {
   }
 
   setInterval(newInterval) {
+    if (this.timer) {
+      this.togglePlay();
+    }
     this.interval = newInterval;
   }
 
@@ -54,7 +57,18 @@ class Slidur {
     document.getElementById("progress").style.width = ratio + "%";
   }
 
-  reset() {}
+  reset() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+
+    this.images = [];
+    this.currentIndex = 0;
+    this.interval = 3000;
+    this.preloaded = [];
+    this.timer = null;
+    this.play = false;
+  }
 }
 
 function getImages(hash) {
