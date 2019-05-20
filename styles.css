@@ -74,6 +74,8 @@
   align-items: flex-start;
   position: relative;
   box-sizing: border-box;
+  padding-top: 30px;
+  padding-bottom: 50px;
 }
 
 .slidur__current-img {
@@ -144,10 +146,10 @@
 }
 
 .slidur__actions {
-  height: 70px;
+  height: 50px;
   position: absolute;
   width: calc(100% - 200px);
-  bottom: -70px;
+  bottom: 0;
   left: 100px;
   display: flex;
   align-items: center;
@@ -177,8 +179,8 @@
   box-shadow: inset 1px 1px rgba(255, 255, 255, 0.25);
   transition: all 0.3s;
   color: white;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   font-family: "Open Sans Condensed";
   display: flex;
