@@ -1,3 +1,4 @@
+//Append style tag for webfont
 var styleNode = document.createElement("style");
 styleNode.type = "text/css";
 styleNode.textContent =
@@ -32,6 +33,8 @@ class Slidur {
     }
   }
 
+  changeSlide() {}
+
   setInterval(newInterval) {
     if (this.timer) {
       this.togglePlay();
@@ -57,7 +60,7 @@ class Slidur {
     document.getElementById("progress").style.width = ratio + "%";
   }
 
-  reset() {
+  remove() {
     if (this.timer) {
       clearInterval(this.timer);
     }
@@ -68,6 +71,8 @@ class Slidur {
     this.preloaded = [];
     this.timer = null;
     this.play = false;
+    const app = document.getElementById("app");
+    document.body.removeChild(app);
   }
 }
 
@@ -94,11 +99,6 @@ function toggleArrows() {
   }
 }
 
-function removeSlidur() {
-  const app = document.getElementById("app");
-  document.body.removeChild(app);
-}
-
 //Create start button at the top of the gallery container
 const iconUrl = chrome.extension.getURL("img/slideshow-icon.svg");
 const postHeader = document.getElementsByClassName("post-header")[0];
@@ -107,7 +107,7 @@ startBtn.classList.add("slidur__start-btn");
 startBtn.innerHTML =
   "<img class='slidur__icon' src='" + iconUrl + "'/>Slidur</div>";
 
-//Get images from Imgur API, creates HTML template and appends to body
+//Get images from Imgur API, create HTML template and attach event listeners
 startBtn.addEventListener("click", function() {
   let slidur = new Slidur();
   //Imgur galleries are preceded by 'gallery' or 'a' routes
@@ -121,7 +121,9 @@ startBtn.addEventListener("click", function() {
     //Add images to slidur
     let imageLinks = [];
     for (let i = 0; i < response.data.length; i++) {
-      imageLinks.push(response.data[i].link);
+      let link = response.data[i].link;
+      imageLinks.push(link);
+      console.log(link);
     }
     slidur.images = imageLinks;
 
@@ -192,7 +194,7 @@ startBtn.addEventListener("click", function() {
       .getElementById("play-btn")
       .addEventListener("click", slidur.togglePlay.bind(slidur));
 
-    document.getElementById("close").addEventListener("click", removeSlidur);
+    document.getElementById("close").addEventListener("click", slidur.remove);
 
     document
       .getElementById("change-interval")
@@ -201,6 +203,7 @@ startBtn.addEventListener("click", function() {
           .getElementsByClassName("slidur__interval-wrapper")[0]
           .classList.add("slidur__interval-wrapper--open");
       });
+
     document
       .getElementById("interval-confirm")
       .addEventListener("click", function() {

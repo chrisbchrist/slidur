@@ -82,14 +82,14 @@
   display: block;
   width: auto;
   height: auto;
-  max-width: calc(100% - 200px);
+  max-width: calc(100% - 160px);
   max-height: calc(100vh - 50px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: all 0.4s;
 }
 
 .slidur__control {
-  width: 100px;
+  width: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -148,9 +148,9 @@
 .slidur__actions {
   height: 50px;
   position: absolute;
-  width: calc(100% - 200px);
+  width: calc(100% - 160px);
   bottom: 0;
-  left: 100px;
+  left: 80px;
   display: flex;
   align-items: center;
 }
@@ -208,6 +208,8 @@
 
 .slidur__change-interval {
   display: flex;
+  position: relative;
+  z-index: 1;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
@@ -225,9 +227,31 @@
   color: rgba(255, 255, 255, 1);
 }
 
-.slidur__interval-wrapper--open .slidur__change-interval {
-  /* background: linear-gradient(to bottom, #16a0db 0%, #0d76bd 100%); */
-  background: #16a0db;
+/* .slidur__interval-wrapper--open .slidur__change-interval {
+  background: linear-gradient(to bottom, #16a0db 0%, #0d76bd 100%); 
+   background: #16a0db;
+} */
+
+.slidur__interval-wrapper--open::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #16a0db 0%, #0d76bd 100%);
+  border-radius: 4px;
+  animation: fadeIn 0.4s linear;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .slidur__interval-popup {
@@ -331,8 +355,8 @@
 
 .slidur__close {
   position: absolute;
-  top: -35px;
-  right: 100px;
+  top: -10px;
+  right: 80px;
   border-radius: 50%;
   /* background: #16a0db; */
   height: 40px;
