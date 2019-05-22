@@ -17,6 +17,23 @@ class Slidur {
     this.play = false;
   }
 
+  getImages(hash) {
+    return $.ajax({
+      url: "https://api.imgur.com/3/album/" + hash + "/images",
+      method: "GET",
+      headers: {
+        Authorization: "Client-ID 07a9a283b2003c0"
+      }
+    });
+  }
+
+  stopTimer() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+
   prevSlide() {
     if (this.currentIndex > 0) {
       this.currentIndex = this.currentIndex - 1;
@@ -30,15 +47,15 @@ class Slidur {
       this.currentIndex = this.currentIndex + 1;
       setImage(this.images[this.currentIndex]);
       this.updateProgress();
+    } else if (this.currentIndex == this.images.length - 1) {
+      this.stopTimer();
     }
   }
 
   changeSlide() {}
 
   setInterval(newInterval) {
-    if (this.timer) {
-      this.togglePlay();
-    }
+    this.stopTimer();
     this.interval = newInterval;
   }
 
@@ -61,9 +78,7 @@ class Slidur {
   }
 
   remove() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
+    this.stopTimer();
 
     this.images = [];
     this.currentIndex = 0;
@@ -74,16 +89,6 @@ class Slidur {
     const app = document.getElementById("app");
     document.body.removeChild(app);
   }
-}
-
-function getImages(hash) {
-  return $.ajax({
-    url: "https://api.imgur.com/3/album/" + hash + "/images",
-    method: "GET",
-    headers: {
-      Authorization: "Client-ID 07a9a283b2003c0"
-    }
-  });
 }
 
 function setImage(url) {
@@ -117,7 +122,7 @@ startBtn.addEventListener("click", function() {
       ? currentUrl.split("/gallery/")[1]
       : currentUrl.split("/a/")[1];
 
-  getImages(galleryHash).done(function(response) {
+  slidur.getImages(galleryHash).done(function(response) {
     //Add images to slidur
     let imageLinks = [];
     for (let i = 0; i < response.data.length; i++) {
@@ -194,7 +199,9 @@ startBtn.addEventListener("click", function() {
       .getElementById("play-btn")
       .addEventListener("click", slidur.togglePlay.bind(slidur));
 
-    document.getElementById("close").addEventListener("click", slidur.remove);
+    document
+      .getElementById("close")
+      .addEventListener("click", slidur.remove.bind(slidur));
 
     document
       .getElementById("change-interval")
@@ -204,17 +211,28 @@ startBtn.addEventListener("click", function() {
           .classList.add("slidur__interval-wrapper--open");
       });
 
+    //Helper function for mouse/key events
+    function changeInterval() {
+      const newInterval = document.getElementById("interval-input").value;
+      if (parseInt(newInterval) > 99 && parseInt(newInterval) < 60001) {
+        slidur.setInterval(newInterval);
+        document
+          .getElementsByClassName("slidur__interval-wrapper")[0]
+          .classList.remove("slidur__interval-wrapper--open");
+      } else {
+        alert("Please enter a value between 100 and 60000.");
+      }
+    }
+
     document
       .getElementById("interval-confirm")
-      .addEventListener("click", function() {
-        const newInterval = document.getElementById("interval-input").value;
-        if (parseInt(newInterval) > 99 && parseInt(newInterval) < 60001) {
-          slidur.setInterval(newInterval);
-          document
-            .getElementsByClassName("slidur__interval-wrapper")[0]
-            .classList.remove("slidur__interval-wrapper--open");
-        } else {
-          alert("Please enter a value between 100 and 60000.");
+      .addEventListener("click", changeInterval);
+
+    document
+      .getElementById("interval-input")
+      .addEventListener("keydown", function(e) {
+        if (e.which === 13) {
+          changeInterval();
         }
       });
 

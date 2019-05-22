@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Slidur",
   "description": "Brings back slideshows for Imgur galleries",
-  "version": "1",
+  "version": "1.0.3",
   "author": "Jake Prins",
   "browser_action": {
     "default_icon": "/img/slidur.png",
