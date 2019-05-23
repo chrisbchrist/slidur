@@ -27,6 +27,20 @@ class Slidur {
     });
   }
 
+  setImage(url) {
+    document.getElementById("current-img").src = url;
+  }
+
+  setVideo(url) {
+    console.log("WTF");
+    const video = document.getElementById("current-vid");
+    document.getElementById("current-img").style.display = "none";
+    video.setAttribute("src", url);
+    video.style.display = "block";
+    video.load();
+    video.play();
+  }
+
   stopTimer() {
     if (this.timer) {
       clearInterval(this.timer);
@@ -37,7 +51,7 @@ class Slidur {
   prevSlide() {
     if (this.currentIndex > 0) {
       this.currentIndex = this.currentIndex - 1;
-      setImage(this.images[this.currentIndex]);
+      this.setImage(this.images[this.currentIndex]);
       this.updateProgress();
     }
   }
@@ -45,7 +59,16 @@ class Slidur {
   nextSlide() {
     if (this.currentIndex < this.images.length - 1) {
       this.currentIndex = this.currentIndex + 1;
-      setImage(this.images[this.currentIndex]);
+      const fileExtension = this.images[this.currentIndex].split(".").pop();
+      console.log(fileExtension);
+      if (fileExtension == "mp4") {
+        console.log("OK VIDEO");
+        this.setVideo(this.images[this.currentIndex]);
+        //this.setImage(this.images[this.currentIndex]);
+      } else {
+        this.setImage(this.images[this.currentIndex]);
+      }
+
       this.updateProgress();
     } else if (this.currentIndex == this.images.length - 1) {
       this.stopTimer();
@@ -89,10 +112,6 @@ class Slidur {
     const app = document.getElementById("app");
     document.body.removeChild(app);
   }
-}
-
-function setImage(url) {
-  document.getElementById("current-img").src = url;
 }
 
 function preloadImages(currentIndex) {}
@@ -156,9 +175,13 @@ startBtn.addEventListener("click", function() {
         <img class="slidur__arrow-icon" src="${prevIcon}"/>
       </div>
     </div>
+    <div class="slidur__slide-wrapper">
     <img id="current-img" class="slidur__current-img" src=${
       slidur.images[slidur.currentIndex]
     }/>
+    <video controls id="current-vid" class="slidur__video">
+    </video>
+    </div>
     <div id="next" class="slidur__control slidur__control--next">
        <div class="slidur__arrow slidur__arrow-next">
        <img class="slidur__arrow-icon" src="${nextIcon}"/>
@@ -184,6 +207,10 @@ startBtn.addEventListener("click", function() {
     </div>
     `;
     document.body.appendChild(bg);
+    const fileType = slidur.images[0].split(".").pop();
+    if (fileType == "mp4") {
+      slidur.setVideo(slidur.images[0]);
+    }
     slidur.updateProgress();
 
     //Attach event listeners

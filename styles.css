@@ -78,41 +78,74 @@
   padding-bottom: 50px;
 }
 
-.slidur__current-img {
+.slidur__slide-wrapper {
   display: block;
-  width: auto;
-  height: auto;
-  max-width: calc(100% - 160px);
+  /* max-width: calc(100% - 160px); */
+  max-width: calc(100% - 20px);
   max-height: calc(100vh - 50px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: all 0.4s;
 }
 
+.slidur__current-img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.slidur__video {
+  display: none;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .slidur__control {
+  position: absolute;
   width: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 1s;
   cursor: pointer;
-  max-height: calc(100% - 50px);
+  height: calc(100% - 80px);
   background: transparent;
   align-self: stretch;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.slidur__control--back {
+  top: 30px;
+  left: 10px;
+}
+
+.slidur__control--next {
+  top: 30px;
+  right: 10px;
+}
+
+.slidur__main:hover .slidur__control {
+  opacity: 1;
 }
 
 .slidur__control--back:hover {
   background: linear-gradient(
     to right,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(255, 255, 255, 0.05) 100%
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 20%,
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
 .slidur__control--next:hover {
   background: linear-gradient(
     to left,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(255, 255, 255, 0.05) 100%
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 20%,
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
@@ -121,8 +154,9 @@
 }
 
 .slidur__arrow-icon {
-  width: 50px;
-  opacity: 0.75;
+  width: 40px;
+  opacity: 0.5;
+  transition: all 0.3s;
 }
 
 .slidur__control:hover .slidur__arrow-icon {
@@ -130,15 +164,6 @@
   filter: drop-shadow(3px 3px 15px rgba(255, 255, 255, 0.35));
 }
 
-@media screen and (max-width: 500px) {
-  .slidur__control {
-    display: none;
-  }
-
-  .slidur__current-img {
-    max-width: 100%;
-  }
-}
 .slidur__progress-wrapper {
   position: absolute;
   width: 100%;
@@ -157,9 +182,9 @@
 .slidur__actions {
   height: 50px;
   position: absolute;
-  width: calc(100% - 160px);
+  width: 100%;
   bottom: 0;
-  left: 80px;
+  left: 0;
   display: flex;
   align-items: center;
 }
@@ -365,7 +390,7 @@
 .slidur__close {
   position: absolute;
   top: -10px;
-  right: 80px;
+  right: 0;
   border-radius: 50%;
   /* background: #16a0db; */
   height: 40px;
