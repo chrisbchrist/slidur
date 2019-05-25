@@ -14,6 +14,7 @@ class Slidur {
     this.interval = 3000;
     this.preloaded = [];
     this.timer;
+    this.ticker;
     this.play = false;
   }
 
@@ -28,6 +29,7 @@ class Slidur {
   }
 
   setImage(url) {
+    document.getElementById("current-vid").style.display = "none";
     document.getElementById("current-img").src = url;
   }
 
@@ -60,11 +62,8 @@ class Slidur {
     if (this.currentIndex < this.images.length - 1) {
       this.currentIndex = this.currentIndex + 1;
       const fileExtension = this.images[this.currentIndex].split(".").pop();
-      console.log(fileExtension);
       if (fileExtension == "mp4") {
-        console.log("OK VIDEO");
         this.setVideo(this.images[this.currentIndex]);
-        //this.setImage(this.images[this.currentIndex]);
       } else {
         this.setImage(this.images[this.currentIndex]);
       }
@@ -116,13 +115,6 @@ class Slidur {
 
 function preloadImages(currentIndex) {}
 
-function toggleArrows() {
-  const arrows = document.getElementsByClassName("slidur__control");
-  for (let i = 0; i < 2; i++) {
-    arrows[i].classList.toggleClass("slidur__control--hidden");
-  }
-}
-
 //Create start button at the top of the gallery container
 const iconUrl = chrome.extension.getURL("img/slideshow-icon.svg");
 const postHeader = document.getElementsByClassName("post-header")[0];
@@ -152,9 +144,9 @@ startBtn.addEventListener("click", function() {
     slidur.images = imageLinks;
 
     //Create backdrop container
-    const bg = document.createElement("div");
-    bg.classList.add("slidur__bg");
-    bg.id = "app";
+    const app = document.createElement("div");
+    app.classList.add("slidur__app");
+    app.id = "app";
 
     //Import icon URL's from extension
     const prevIcon = chrome.extension.getURL("img/chevron-left-solid.svg");
@@ -164,7 +156,7 @@ startBtn.addEventListener("click", function() {
     const checklIcon = chrome.extension.getURL("img/check-solid.svg");
     const xIcon = chrome.extension.getURL("img/times-solid.svg");
 
-    bg.innerHTML = `
+    app.innerHTML = `
     <div class="slidur__progress-wrapper">
     <div id="progress" class="slidur__progress"></div>
     </div>
@@ -176,6 +168,7 @@ startBtn.addEventListener("click", function() {
       </div>
     </div>
     <div class="slidur__slide-wrapper">
+    <div class="slidur__ticker-wrapper"><div class="slidur__ticker" id="ticker"></div></div>
     <img id="current-img" class="slidur__current-img" src=${
       slidur.images[slidur.currentIndex]
     }/>
@@ -206,11 +199,13 @@ startBtn.addEventListener("click", function() {
     </div>
     </div>
     `;
-    document.body.appendChild(bg);
+    document.body.appendChild(app);
+
     const fileType = slidur.images[0].split(".").pop();
     if (fileType == "mp4") {
       slidur.setVideo(slidur.images[0]);
     }
+
     slidur.updateProgress();
 
     //Attach event listeners

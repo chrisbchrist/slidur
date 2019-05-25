@@ -40,7 +40,7 @@
   transform: translateY(1px);
 }
 
-.slidur__bg {
+.slidur__app {
   position: fixed;
   z-index: 999;
   width: 100%;
@@ -74,7 +74,7 @@
   align-items: flex-start;
   position: relative;
   box-sizing: border-box;
-  padding-top: 30px;
+  padding-top: 40px;
   padding-bottom: 50px;
 }
 
@@ -85,6 +85,23 @@
   max-height: calc(100vh - 50px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: all 0.4s;
+  padding-top: 5px;
+  position: relative;
+}
+
+.slidur__ticker-wrapper {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.slidur__ticker {
+  height: 5px;
+  background: #1bb76e;
+  width: 0;
 }
 
 .slidur__current-img {
@@ -110,20 +127,21 @@
   align-items: center;
   transition: all 1s;
   cursor: pointer;
-  height: calc(100% - 80px);
+  height: calc(100% - 90px);
   background: transparent;
   align-self: stretch;
   opacity: 0;
   transition: all 0.3s;
+  z-index: 2;
 }
 
 .slidur__control--back {
-  top: 30px;
+  top: 40px;
   left: 10px;
 }
 
 .slidur__control--next {
-  top: 30px;
+  top: 40px;
   right: 10px;
 }
 
@@ -182,7 +200,7 @@
 .slidur__actions {
   height: 50px;
   position: absolute;
-  width: 100%;
+  width: calc(100% - 20px);
   bottom: 0;
   left: 0;
   display: flex;
@@ -235,6 +253,7 @@
 
 .slidur__interval-wrapper {
   position: absolute;
+  z-index: 5;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
@@ -276,7 +295,7 @@
   height: 100%;
   background: linear-gradient(to bottom, #16a0db 0%, #0d76bd 100%);
   border-radius: 4px;
-  animation: fadeIn 0.4s linear;
+  animation: fadeIn 0.3s linear;
 }
 
 @keyframes fadeIn {
@@ -294,7 +313,7 @@
   position: absolute;
   left: 0;
   top: -12px;
-  transform: translate(-30%, -100%);
+  transform: translate(-42%, -100%);
   background: white;
   border-radius: 5px;
   width: 220px;
@@ -334,7 +353,7 @@
 }
 
 .slidur__interval-input {
-  background-color: #ddd !important;
+  background-color: #fff !important;
   color: #555 !important;
   font-size: 14px !important;
   width: 190px;

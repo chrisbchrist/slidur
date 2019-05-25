@@ -9,10 +9,20 @@
     "default_title": "Slidur",
     "default_popup": "popup.html"
   },
-  "web_accessible_resources": ["img/*.svg", ".ttf", "lib/*.ttf", "img/*.woff"],
+  "web_accessible_resources": [
+    "img/*.svg",
+    ".ttf",
+    "lib/*.ttf",
+    "img/*.woff",
+    "lib/fa-solid-900.eot",
+    "lib/fa-solid-900.svg",
+    "lib/fa-solid-900.ttf",
+    "lib/fa-solid-900.woff",
+    "lib/fa-solid-900.woff2"
+  ],
   "content_scripts": [
     {
-      "css": ["styles.css"],
+      "css": ["lib/all.css", "styles.css"],
       "js": ["lib/jquery-3.4.1.min.js", "content.js"],
       "matches": ["https://imgur.com/gallery/*", "https://imgur.com/a/*"],
       "run_at": "document_end"
