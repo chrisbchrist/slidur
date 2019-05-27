@@ -29,12 +29,15 @@ class Slidur {
   }
 
   setImage(url) {
+    const currentImg = document.getElementById("current-img");
     document.getElementById("current-vid").style.display = "none";
-    document.getElementById("current-img").src = url;
+    currentImg.src = url;
+    if (currentImg.style.display == "none") {
+      currentImg.style.display = "block";
+    }
   }
 
   setVideo(url) {
-    console.log("WTF");
     const video = document.getElementById("current-vid");
     document.getElementById("current-img").style.display = "none";
     video.setAttribute("src", url);
@@ -45,8 +48,7 @@ class Slidur {
 
   stopTimer() {
     if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
+      this.togglePlay();
     }
   }
 
@@ -67,7 +69,6 @@ class Slidur {
       } else {
         this.setImage(this.images[this.currentIndex]);
       }
-
       this.updateProgress();
     } else if (this.currentIndex == this.images.length - 1) {
       this.stopTimer();
@@ -86,7 +87,11 @@ class Slidur {
       ? chrome.extension.getURL("img/play-solid.svg")
       : chrome.extension.getURL("img/pause-solid.svg");
     if (!this.timer) {
-      this.timer = setInterval(() => this.nextSlide(), this.interval);
+      this.timer = setInterval(() => {
+        const ticker = document.getElementById("ticker");
+
+        this.nextSlide();
+      }, this.interval);
     } else {
       clearInterval(this.timer);
       this.timer = null;
