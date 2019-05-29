@@ -88,8 +88,13 @@ class Slidur {
       : chrome.extension.getURL("img/pause-solid.svg");
     if (!this.timer) {
       this.timer = setInterval(() => {
+        if (this.ticker) {
+          clearInterval(this.ticker);
+        }
         const ticker = document.getElementById("ticker");
-
+        this.ticker = setInterval(() => {
+          ticker.style.width = ticker.style.width;
+        }, this.interval / 100);
         this.nextSlide();
       }, this.interval);
     } else {
@@ -270,6 +275,13 @@ startBtn.addEventListener("click", function() {
           .getElementsByClassName("slidur__interval-wrapper")[0]
           .classList.remove("slidur__interval-wrapper--open");
       });
+
+    //Use keyup as keypress does not work for escape in Chrome
+    document.addEventListener("keyup", function(e) {
+      if (e.keyCode === 27) {
+        slidur.remove();
+      }
+    });
   });
 });
 

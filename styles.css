@@ -135,7 +135,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 80px;
+  width: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -147,7 +147,7 @@
   opacity: 0;
   transition: all 0.3s;
   z-index: 2;
-  background: rgba(20, 20, 20, 0.6);
+  background: rgba(20, 20, 20, 0.4);
   border-radius: 5px;
   max-height: 100px;
 }
@@ -187,14 +187,14 @@
 }
 
 .slidur__arrow-icon {
-  width: 40px;
-  opacity: 0.5;
+  width: 35px;
+  opacity: 0.75;
   transition: all 0.3s;
 }
 
 .slidur__control:hover .slidur__arrow-icon {
   opacity: 1;
-  filter: drop-shadow(3px 3px 15px rgba(255, 255, 255, 0.35));
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
 }
 
 .slidur__progress-wrapper {
